@@ -11,7 +11,7 @@ def get_fields(codigo , descricao , link, page):
         houseRequest = requests.get(link , headers={'User-Agent': 'Mozilla/5.0'})
         assert houseRequest.status_code == 200 , 'Status code error'
     except:
-        time.sleep(10)
+        time.sleep(5)
         houseRequest = requests.get(link , headers={'User-Agent': 'Mozilla/5.0'})
         assert houseRequest.status_code == 200 , 'Status code error'
 
