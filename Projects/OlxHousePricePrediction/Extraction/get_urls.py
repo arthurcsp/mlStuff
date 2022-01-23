@@ -1,16 +1,24 @@
 from bs4 import BeautifulSoup
 import requests
+from IPython.display import clear_output
 
 
 
 def get_urls(link,pages):
 
     links= {}
+    errors = []
 
     for page in range(1,pages + 1):  
+        clear_output(wait = True)
     ### Request
         olxRequest = requests.get('{}?o={}'.format(link,page) , headers={'User-Agent': 'Mozilla/5.0'})
-        assert olxRequest.status_code == 200 , 'Status code error'  
+        try:
+            assert olxRequest.status_code == 200 , 'Status code error {}'.format(olxRequest.status_code)  
+        except:
+            print('Status code error {} in page {}'.format(olxRequest.status_code,page) )
+            errors.append(page)
+            continue
     
     ### Soup
         soup = BeautifulSoup(olxRequest.content, 'html.parser')
@@ -30,5 +38,6 @@ def get_urls(link,pages):
                 None
         
         links[page]=urls
-
+        print(f'Página Atual: {page}')
+        print(f'Páginas com erro: {errors}')
     return links 
